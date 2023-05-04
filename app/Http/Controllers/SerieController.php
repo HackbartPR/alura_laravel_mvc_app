@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Serie;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class SerieController extends Controller
@@ -14,15 +15,10 @@ class SerieController extends Controller
         return view('series.index')->with('series', $series);
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
-        $name = $request->input('name');
+        Serie::create($request->all());
 
-        $serie = new Serie();
-        $serie->name = $name;
-
-        $serie->save();
-
-        return redirect('/series');
+        return to_route('series.index');
     }
 }
