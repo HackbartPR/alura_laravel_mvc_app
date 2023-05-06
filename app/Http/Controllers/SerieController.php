@@ -25,24 +25,28 @@ class SerieController extends Controller
     public function store(Request $request): RedirectResponse
     {
         try{
-            Serie::create($request->all());
-            $request->session()->flash('message.success', 'Série criada com sucesso!');
-        }catch(Exception $e) {
-            $request->session()->flash('message.error', 'Ops, tente novamente!');
-        }
+            $series = Serie::create($request->all());
 
-        return to_route('series.index');
+            return to_route('series.index')
+                ->with('message.success', "Série '{$series->name}' criada com sucesso!");
+        }catch(Exception $e) {
+
+            return to_route('series.index')
+            ->with('message.error', 'Ops, tente novamente!');
+        }
     }
 
-    public function destroy(Request $request): RedirectResponse
+    public function destroy(Serie $series): RedirectResponse
     {
         try{
-            Serie::destroy($request->series);
-            $request->session()->flash('message.success', 'Série deletada com sucesso!');
-        }catch(Exception $e) {
-            $request->session()->flash('message.error', 'Ops, tente novamente!');
-        }
+            $series->deleteOrFail();
 
-        return to_route('series.index');
+            return to_route('series.index')
+                ->with('message.success', "Série '{$series->name}' deletada com sucesso!");
+        }catch(Exception $e) {
+
+            return to_route('series.index')
+                ->with('message.error', 'Ops, tente novamente!');
+        }
     }
 }
