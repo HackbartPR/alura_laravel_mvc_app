@@ -23,6 +23,8 @@ Route::controller(SerieController::class)->group(function () {
     Route::view('/series/create', 'series.create')->name('series.create');
     Route::post('/series/store', 'store')->name('series.store');
     Route::delete('/series/{series}', 'destroy')->name('series.destroy');
+    Route::get('/series/{series}/edit', 'edit')->name('series.edit');
+    Route::put('/series/{series}', 'update')->name('series.update');
 });
 
 

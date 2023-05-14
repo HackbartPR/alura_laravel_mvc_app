@@ -14,12 +14,16 @@
             <li class="list-group-item d-flex justify-content-between align-items-center">
                 {{$serie->name}}
 
-                <form action="{{route('series.destroy', $serie->id)}}" method="POST">
-                    @csrf
-                    @method('DELETE')
+                <div class="d-flex justify-content-end align-items-center gap-2">
+                    <a href="{{route('series.edit', $serie->id)}}" class="btn btn-outline-info">E</a>
 
-                    <button class="btn btn-outline-danger">X</button>
-                </form>
+                    <form action="{{route('series.destroy', $serie->id)}}" method="POST">
+                        @csrf
+                        @method('DELETE')
+
+                        <button class="btn btn-outline-danger">X</button>
+                    </form>
+                </div>
             </li>
         @endforeach
     </ul>
