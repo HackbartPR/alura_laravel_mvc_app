@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\SeriesFormRequest;
 use App\Models\Serie;
 use Exception;
 use GuzzleHttp\Psr7\Response;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
@@ -23,7 +25,12 @@ class SerieController extends Controller
             ->with('messageError', $messageError);
     }
 
-    public function store(Request $request): RedirectResponse
+    public function create(): View
+    {
+        return view('series.create');
+    }
+
+    public function store(SeriesFormRequest $request): RedirectResponse
     {
         try{
             $series = Serie::create($request->all());
@@ -51,13 +58,13 @@ class SerieController extends Controller
         }
     }
 
-    public function edit(Serie $series)
+    public function edit(Serie $series): View
     {
         return view('series.edit')
             ->with('series', $series);
     }
 
-    public function update(Request $request, Serie $series):RedirectResponse
+    public function update(SeriesFormRequest $request, Serie $series):RedirectResponse
     {
         try{
             $series->fill($request->all());

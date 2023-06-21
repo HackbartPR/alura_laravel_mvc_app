@@ -20,7 +20,7 @@ Route::get('/', function () {
 
 Route::controller(SerieController::class)->group(function () {
     Route::get('/series', 'index')->name('series.index');
-    Route::view('/series/create', 'series.create')->name('series.create');
+    Route::get('/series/create', 'create')->name('series.create');
     Route::post('/series/store', 'store')->name('series.store');
     Route::delete('/series/{series}', 'destroy')->name('series.destroy');
     Route::get('/series/{series}/edit', 'edit')->name('series.edit');
