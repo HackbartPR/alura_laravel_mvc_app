@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\SeriesFormRequest;
+use App\Http\Requests\SeriesUpdateFormRequest;
 use App\Models\Episode;
 use App\Models\Season;
 use App\Models\Serie;
@@ -25,6 +26,15 @@ class SerieController extends Controller
             ->with('series', $series)
             ->with('messageSuccess', $messageSuccess)
             ->with('messageError', $messageError);
+    }
+
+    public function show(Serie $series): View
+    {
+        $seasons = $series->seasons()->with('episodes')->get();
+
+        return view('series.show')
+            ->with('series', $series)
+            ->with('seasons', $seasons);
     }
 
     public function create(): View
@@ -71,11 +81,17 @@ class SerieController extends Controller
 
     public function edit(Serie $series): View
     {
+        $seasons = $series->seasons()->with('episodes')->get();
+        $seasonAmount = $seasons->count();
+        $episodesAmount = $seasons[0]->episodes->count();
+
         return view('series.edit')
-            ->with('series', $series);
+            ->with('series', $series)
+            ->with('seasons', $seasonAmount)
+            ->with('episodes', $episodesAmount);
     }
 
-    public function update(SeriesFormRequest $request, Serie $series):RedirectResponse
+    public function update(SeriesUpdateFormRequest $request, Serie $series):RedirectResponse
     {
         try{
             $series->fill($request->all());

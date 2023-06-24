@@ -7,7 +7,7 @@
     <title>{{$title}}</title>
     <link rel='stylesheet' href="{{asset('css/app.css')}}">
 </head>
-<body>
+<body class="mx-4 my-4">
     <div class="container"></div>
     <h1 class="mx-3 my-2">{{$title}}</h1>
     <div class="mx-3 my-2">
