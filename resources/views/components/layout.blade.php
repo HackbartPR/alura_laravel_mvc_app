@@ -13,5 +13,7 @@
     <div class="mx-3 my-2">
         {{$slot}}
     </div>
+
+    @stack('scripts')
 </body>
 </html>

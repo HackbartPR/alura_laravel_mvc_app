@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\SeriesFormRequest;
+use App\Models\Episode;
+use App\Models\Season;
 use App\Models\Serie;
 use Exception;
 use GuzzleHttp\Psr7\Response;
@@ -14,7 +16,7 @@ class SerieController extends Controller
 {
     public function index()
     {
-        $series = Serie::query()->orderBy('name', 'asc')->get();
+        $series = Serie::all();
 
         $messageSuccess = session('message.success');
         $messageError = session('message.error');
@@ -35,10 +37,19 @@ class SerieController extends Controller
         try{
             $series = Serie::create($request->all());
 
+            $seasonList = $this->createSeasonList($request->seasons, $series->id);
+            Season::insert($seasonList);
+
+            $episodesList = [];
+            foreach ($series->seasons as $season) {
+                $episodesList = array_merge($episodesList, $this->createEpisodeList($request->episodes, $season->id));
+            }
+            Episode::insert($episodesList);
+
             return to_route('series.index')
                 ->with('message.success', "Série '{$series->name}' criada com sucesso!");
         }catch(Exception $e) {
-
+            dd($e);
             return to_route('series.index')
             ->with('message.error', 'Ops, tente novamente!');
         }
@@ -76,5 +87,31 @@ class SerieController extends Controller
             return to_route('series.index')
             ->with('message.error', 'Ops, tente novamente!');
         }
+    }
+
+    private function createSeasonList(int $amount, int $serieId): array
+    {
+        $seasons = [];
+        for($i = 1; $i<= $amount; $i++) {
+            $seasons[] = [
+                'number' => $i,
+                'series_id' => $serieId
+            ];
+        }
+
+        return $seasons;
+    }
+
+    private function createEpisodeList(int $amount, int $seasonId): array
+    {
+        $episodes = [];
+        for($i = 1; $i<= $amount; $i++) {
+            $episodes[] = [
+                'number' => $i,
+                'season_id' => $seasonId
+            ];
+        }
+
+        return $episodes;
     }
 }

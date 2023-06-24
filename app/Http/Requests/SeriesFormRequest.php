@@ -22,7 +22,9 @@ class SeriesFormRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'min:3']
+            'name' => ['required', 'min:3'],
+            'seasons' => ['required', 'integer', 'gte:1'],
+            'episodes' => ['required', 'integer', 'gte:1']
         ];
     }
 }

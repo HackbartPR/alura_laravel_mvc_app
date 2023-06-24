@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\SeasonController;
 use App\Http\Controllers\SerieController;
 use Illuminate\Support\Facades\Route;
 
@@ -26,5 +27,3 @@ Route::controller(SerieController::class)->group(function () {
     Route::get('/series/{series}/edit', 'edit')->name('series.edit');
     Route::put('/series/{series}', 'update')->name('series.update');
 });
-
-
