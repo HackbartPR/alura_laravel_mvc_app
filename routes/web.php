@@ -30,4 +30,8 @@ Route::controller(SerieController::class)->group(function () {
     Route::delete('/series/{series}', 'destroy')->name('series.destroy');
 });
 
-Route::get('/seasons/{season}/episodes', [EpisodeController::class, 'index'])->name('episodes.index');
+Route::controller(EpisodeController::class)->group(function () {
+    Route::get('/episodes/{season}', 'index')->name('episodes.index');
+    Route::patch('/episodes/{season}', 'update')->name('episodes.update');
+});
+

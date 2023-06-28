@@ -9,6 +9,7 @@ class Episode extends Model
 {
     use HasFactory;
     public $timestamps = false;
+    protected $casts = ['watched' => 'boolean'];
 
     public function seasons()
     {
